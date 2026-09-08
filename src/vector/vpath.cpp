@@ -509,11 +509,21 @@ static VPointF curvesForArc(const VRectF &rect, float startAngle,
     return startPoint;
 }
 
+static constexpr float POLYSTAR_MAX_POINTS = 512.0f;
+
+static inline bool vIsValidPointCount(float points)
+{
+    return std::isfinite(points) && points >= 0.0f &&
+           points <= POLYSTAR_MAX_POINTS;
+}
+
 void VPath::VPathData::addPolystar(float points, float innerRadius,
                                    float outerRadius, float innerRoundness,
                                    float outerRoundness, float startAngle,
                                    float cx, float cy, VPath::Direction dir)
 {
+    if (!vIsValidPointCount(points)) return;
+
     const static float POLYSTAR_MAGIC_NUMBER = 0.47829f / 0.28f;
     float              currentAngle = (startAngle - 90.0f) * K_PI / 180.0f;
     float              x;
@@ -618,6 +628,8 @@ void VPath::VPathData::addPolygon(float points, float radius, float roundness,
                                   float startAngle, float cx, float cy,
                                   VPath::Direction dir)
 {
+    if (!vIsValidPointCount(points)) return;
+
     // TODO: Need to support floating point number for number of points
     const static float POLYGON_MAGIC_NUMBER = 0.25;
     float              currentAngle = (startAngle - 90.0f) * K_PI / 180.0f;
