@@ -454,8 +454,8 @@ class RleTaskScheduler {
 public:
     static RleTaskScheduler &instance()
     {
-        static RleTaskScheduler singleton;
-        return singleton;
+        static RleTaskScheduler *singleton = new RleTaskScheduler();
+        return *singleton;
     }
 
     ~RleTaskScheduler()

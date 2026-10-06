@@ -31,8 +31,8 @@ class LottieModelCache {
 public:
     static LottieModelCache &instance()
     {
-        static LottieModelCache CACHE;
-        return CACHE;
+        static LottieModelCache *CACHE = new LottieModelCache();
+        return *CACHE;
     }
     std::shared_ptr<LOTModel> find(const std::string &key)
     {
